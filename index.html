@@ -42,5 +42,360 @@ function enzymeMigrate(fallback){try{if(localStorage.getItem('enzyme-lesson-2026
   <style>.ds-app.design-simulation-blueprint .ch-pillars__card small{white-space:pre-line;font-family:var(--ch-ui);font-size:.76em;font-weight:650;letter-spacing:0;line-height:1.42;color:#f5c56d}.ds-app.design-simulation-blueprint .ch-pillars__card small>.slide-inline-edit{white-space:pre-line}</style></head>
   <body>
     <div id="root"></div>
-  </body>
+  <script data-enzyme-example-details>
+// 효소 종류별 두 예시의 수업용 풀이. 외부 연결 없이 본문을 읽을 수 있습니다.
+(()=>{
+const groups=[
+{title:'산화 환원 효소',point:'전자나 수소를 주고받아 물질의 산화 상태가 달라집니다.',examples:[
+{name:'카탈레이스',reaction:'2H₂O₂ → 2H₂O + O₂',explain:'세포에서 생긴 과산화 수소를 물과 산소로 바꿉니다. 과산화 수소는 세포를 손상시킬 수 있으므로 이를 제거하는 데 도움이 됩니다.',why:'과산화 수소 일부는 물로 환원되고, 나머지는 산소로 산화됩니다. 분해 반응처럼 보여도 산화와 환원이 함께 일어나므로 산화 환원 효소입니다.',ec:'1/11/1/6'},
+{name:'젖산 탈수소효소',reaction:'피루브산 + NADH + H⁺ ↔ 젖산 + NAD⁺',explain:'젖산이 만들어지는 방향에서는 피루브산이 NADH로부터 전자와 수소를 받아 젖산으로 환원됩니다. 이때 NADH는 NAD⁺로 산화됩니다.',why:'재생된 NAD⁺는 해당 과정에서 다시 쓰일 수 있습니다. 핵심은 피루브산과 NADH 사이에서 전자가 이동한다는 점입니다.',ec:'1/1/1/27'}]},
+{title:'전이 효소',point:'분자 전체가 아니라 인산기·아미노기 같은 작용기가 다른 분자로 옮겨 갑니다.',examples:[
+{name:'헥소키네이스',reaction:'포도당 + ATP → 포도당 6인산 + ADP',explain:'ATP의 인산기 하나를 포도당에 붙입니다. 포도당은 포도당 6인산이 되고, ATP는 인산기 하나를 잃어 ADP가 됩니다.',why:'해당 과정의 첫 단계에 해당합니다. ATP를 사용한다는 사실보다 인산기가 ATP에서 포도당으로 옮겨 간다는 점이 분류 기준입니다.',ec:'2/7/1/1'},
+{name:'아미노기 전이효소(AST)',reaction:'아스파트산 + α-케토글루타르산 ↔ 옥살아세트산 + 글루탐산',explain:'아스파트산의 아미노기를 α-케토글루타르산으로 옮깁니다. 아미노기를 준 쪽은 옥살아세트산이 되고, 받은 쪽은 글루탐산이 됩니다.',why:'아미노산 대사에서 아미노기를 주고받는 반응입니다. 분자 사이에서 아미노기가 이동하므로 전이 효소에 속합니다.',ec:'2/6/1/1'}]},
+{title:'가수 분해 효소',point:'물을 사용해 결합을 끊습니다. 물에서 온 H와 OH가 끊어진 양쪽에 더해집니다.',examples:[
+{name:'아밀레이스',reaction:'녹말 + 물 → 더 짧은 당 사슬·엿당 등 (개략식)',explain:'녹말 사슬의 α-1,4 글리코사이드 결합을 물을 이용해 끊습니다. 긴 녹말이 더 짧은 당 사슬과 엿당 등으로 나뉩니다.',why:'침과 이자액에 들어 있는 아밀레이스가 녹말 소화를 돕습니다. 아밀레이스만으로 녹말이 전부 포도당까지 분해되는 것은 아닙니다.',ec:'3/2/1/1'},
+{name:'펩신',reaction:'단백질 + 물 → 더 짧은 펩타이드들 (개략식)',explain:'위의 산성 환경에서 작용하며, 단백질 사슬 안의 펩타이드 결합을 물을 이용해 끊습니다. 큰 단백질이 더 짧은 펩타이드로 나뉩니다.',why:'단백질 소화의 초기 단계를 돕습니다. 결합을 끊는 데 물을 사용하므로 가수 분해 효소이며, 펩신만으로 모두 아미노산이 되는 것은 아닙니다.',ec:'3/4/23/1'}]},
+{title:'분해·부가 효소',point:'가수 분해나 산화 환원 이외의 방식으로 작용기를 떼거나, 이중 결합에 물질을 더합니다.',examples:[
+{name:'피루브산 탈탄산효소',reaction:'피루브산 → 아세트알데하이드 + CO₂',explain:'탄소가 3개인 피루브산에서 탄소 1개가 이산화 탄소로 떨어져 나가고, 탄소가 2개인 아세트알데하이드가 남습니다.',why:'효모의 알코올 발효에서 일어나는 반응입니다. 이 효소는 아세트알데하이드까지 만들며, 에탄올로 바꾸는 다음 반응은 다른 효소가 담당합니다.',ec:'4/1/1/1'},
+{name:'푸마레이스',reaction:'푸마르산 + H₂O ↔ 말산',explain:'푸마르산의 탄소 사이 이중 결합에 물의 성분인 H와 OH가 더해져 말산이 됩니다. 시트르산 회로에서 볼 수 있는 반응입니다.',why:'물이 쓰여도 분자를 두 조각으로 자르는 가수 분해가 아닙니다. 이중 결합에 물을 더하는 부가 반응이므로 분해·부가 효소에 속합니다.',ec:'4/2/1/2'}]},
+{title:'이성질화 효소',point:'분자 안의 원자 배열이 달라집니다. 분자식과 탄소 수는 그대로입니다.',examples:[
+{name:'포도당 6인산 이성질화효소',reaction:'포도당 6인산 ↔ 과당 6인산',explain:'탄소가 6개인 포도당 6인산의 구조를 바꾸어 과당 6인산으로 전환합니다. 알데하이드형과 케톤형 사이의 구조 전환입니다.',why:'해당 과정에서 일어납니다. 인산기를 다른 분자에서 가져오는 것이 아니라, 같은 분자 안의 원자 배열을 바꾸는 반응입니다.',ec:'5/3/1/9'},
+{name:'삼탄당 인산 이성질화효소',reaction:'다이하이드록시아세톤 인산(DHAP) ↔ 글리세르알데하이드 3인산(G3P·PGAL)',explain:'탄소가 3개인 두 인산화 당 사이에서 구조를 바꿉니다. DHAP와 G3P는 분자식은 같지만 원자 배열이 다른 이성질체입니다.',why:'해당 과정에서 DHAP도 G3P로 바뀌어 다음 반응에 참여할 수 있습니다. 새 탄소를 붙이거나 분자를 쪼개는 반응은 아닙니다.',ec:'5/3/1/1'}]},
+{title:'합성 효소',point:'에너지를 사용해 새로운 결합을 만듭니다. 여기서는 연결효소(ligase)의 예를 봅니다.',examples:[
+{name:'DNA 연결효소',reaction:'DNA의 인접한 두 말단 + 에너지 → 연결된 DNA (개략식)',explain:'DNA 가닥의 끊어진 자리에서 한쪽의 3′-OH와 다른 쪽의 5′-인산 사이에 인산다이에스터 결합을 만듭니다.',why:'DNA 복제 때 생긴 조각을 잇거나 손상된 DNA를 복구할 때 작용합니다. ATP를 사용하는 종류를 예로 들 수 있으며, DNA의 당·인산 골격을 잇습니다.',ec:'6/5/1/1'},
+{name:'피루브산 카복실화효소',reaction:'피루브산 + HCO₃⁻ + ATP → 옥살아세트산 + ADP + Pi',explain:'탄소가 3개인 피루브산에 탄소 1개를 더해 탄소가 4개인 옥살아세트산을 만듭니다. 탄소 공급원은 탄산수소 이온(HCO₃⁻)이며, ATP 에너지를 사용합니다.',why:'새로운 탄소–탄소 결합을 만들므로 합성 효소에 속합니다. 옥살아세트산은 시트르산 회로의 중간 물질을 보충하는 데 쓰일 수 있습니다. Pi는 무기 인산입니다.',ec:'6/4/1/1'}]}
+];
+const visualColors={ink:'#e5edf5',blue:'#83b9f1',gold:'#ffd078',green:'#96d9b5',pink:'#f2a8b7',muted:'#a9bacb'};
+const sx=v=>String(v).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+function vt(x,y,t,color='ink',size=23){return `<text x="${x}" y="${y}" text-anchor="middle" fill="${visualColors[color]||color}" font-size="${size}">${sx(t)}</text>`}
+function vl(x,y,x2,y2,color='muted',width=3){return `<path d="M${x} ${y}L${x2} ${y2}" fill="none" stroke="${visualColors[color]}" stroke-width="${width}"/>`}
+function va(x,y,x2,y2,color='gold'){const a=Math.atan2(y2-y,x2-x),r=11;return vl(x,y,x2,y2,color)+`<path d="M${x2-r*Math.cos(a-.5)} ${y2-r*Math.sin(a-.5)}L${x2} ${y2}L${x2-r*Math.cos(a+.5)} ${y2-r*Math.sin(a+.5)}" fill="none" stroke="${visualColors[color]}" stroke-width="3"/>`}
+function vb(x,y,w,h,text,color='blue',size=22){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${visualColors[color]}" fill-opacity=".09" stroke="${visualColors[color]}"/>`+vt(x+w/2,y+h/2+size*.35,text,color,size)}
+function vc(x,y,text,color='blue',r=23){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${visualColors[color]}" fill-opacity=".14" stroke="${visualColors[color]}" stroke-width="2"/>`+vt(x,y+7,text,color,22)}
+function chain(x,y,n,space=55,lastColor){let s='';for(let i=0;i<n;i++){if(i)s+=vl(x+(i-1)*space+23,y,x+i*space-23,y);s+=vc(x+i*space,y,'C',i===n-1&&lastColor?lastColor:'blue')}return s}
+function vatom(x,y,label,color='pink'){return vt(x,y,label,color,25)}
+function water(x,y){return vatom(x-36,y,'H','ink')+vl(x-22,y-8,x-8,y-8)+vatom(x,y,'O')+vl(x+10,y-8,x+24,y-8)+vatom(x+38,y,'H','ink')}
+function visualFor(ec){
+switch(ec){
+case '1/11/1/6':return {caption:'O를 분홍색으로 표시했습니다. 반응 전후에 H 원자 4개와 O 원자 4개가 보존됩니다.',body:
+vt(300,28,'과산화 수소 두 분자', 'muted',20)+
+vt(80,85,'H')+vl(94,77,118,77)+vatom(135,85,'O')+vl(151,77,175,77)+vatom(192,85,'O')+vl(208,77,232,77)+vt(250,85,'H')+vt(300,85,'+')+
+vt(350,85,'H')+vl(364,77,388,77)+vatom(405,85,'O')+vl(421,77,445,77)+vatom(462,85,'O')+vl(478,77,502,77)+vt(520,85,'H')+
+va(300,108,300,155)+vt(418,137,'카탈레이스','gold',20)+water(110,210)+vt(205,210,'+')+water(300,210)+vt(392,210,'+')+vatom(450,210,'O')+vl(466,200,495,200)+vl(466,207,495,207)+vatom(514,210,'O')+
+vt(205,270,'물 2분자','blue',20)+vt(485,270,'산소 1분자','green',20)};
+case '1/1/1/27':return {caption:'반응 전후 구조식을 비교하세요. C=O가 C–OH로 바뀌며 NADH는 NAD⁺가 됩니다.',body:
+vt(300,28,'피루브산 → 젖산 방향','muted',20)+vb(35,55,235,58,'CH₃–C(=O)–COO⁻','blue',23)+vt(150,146,'피루브산','blue',21)+vb(330,55,235,58,'CH₃–CH(OH)–COO⁻','green',22)+vt(448,146,'젖산','green',21)+va(280,85,320,85)+
+vb(70,185,145,48,'NADH + H⁺','gold',22)+va(225,209,365,209)+vb(380,185,145,48,'NAD⁺','gold',22)+vt(300,276,'전자·수소를 전달 → 피루브산이 환원','gold',21)};
+case '2/7/1/1':return {caption:'노란색 P가 ATP에서 포도당으로 이동합니다. P는 인산기를 나타낸 기호입니다.',body:
+vb(25,40,150,57,'포도당','blue')+vt(210,79,'+')+vt(280,79,'ATP','muted',20)+vc(350,71,'P')+vl(375,71,391,71)+vc(416,71,'P')+vl(440,71,457,71,'gold')+vc(482,71,'P','gold')+
+va(300,115,300,165)+vt(415,145,'인산기 1개 이동','gold',20)+vb(25,190,150,57,'포도당','blue')+vl(177,218,197,218,'gold')+vc(223,218,'P','gold')+vt(280,226,'+')+vt(350,226,'ADP','muted',20)+vc(423,218,'P')+vl(448,218,464,218)+vc(490,218,'P')+
+vt(180,285,'포도당 6인산','green',21)};
+case '2/6/1/1':return {caption:'아미노기를 준 분자와 받은 분자를 위아래로 비교하세요. 분자 사이에 아미노기가 이동합니다.',body:
+vb(25,30,215,58,'아스파트산','blue')+va(255,60,345,60)+vb(360,30,215,58,'옥살아세트산','blue',21)+
+vc(130,120,'NH₂','gold',30)+va(170,130,395,199)+vt(292,159,'아미노기 이동','gold',20)+
+vb(25,212,215,58,'α-케토글루타르산','green',18)+va(255,240,345,240)+vb(360,212,215,58,'글루탐산','green')+vc(466,160,'NH₂','gold',30)};
+case '3/2/1/1':{let a=vt(300,27,'녹말 사슬의 일부 · 원 1개는 포도당 단위','muted',19);for(let i=0;i<6;i++){if(i)a+=vl(100+(i-1)*75,73,56+i*75,73,i===3?'gold':'muted');a+=vc(78+i*75,73,'당','blue',22)}a+=vt(304,111,'α-1,4 결합을 끊음','gold',19)+va(300,124,300,170)+vt(405,151,'+ H₂O','gold',24);for(let i=0;i<3;i++){if(i)a+=vl(98+(i-1)*65,220,121+(i-1)*65,220);a+=vc(77+i*65,220,'당','blue',22)}for(let i=0;i<3;i++){if(i)a+=vl(381+(i-1)*65,220,404+(i-1)*65,220);a+=vc(360+i*65,220,'당','blue',22)}a+=vt(250,228,'OH','gold',21)+vt(295,228,'+')+vt(323,228,'H','gold',21)+vt(300,281,'물을 사용해 더 짧은 당 사슬로 분해','green',21);return {body:a,caption:'결합 하나의 가수 분해를 단순화한 그림입니다. 생성물은 여러 길이의 당 사슬이 될 수 있습니다.'}}
+case '3/4/23/1':return {caption:'R과 R′는 사슬의 나머지 부분입니다. 물에서 온 OH와 H가 각각 끊어진 양쪽에 붙습니다.',body:
+vt(300,30,'단백질 사슬 속 펩타이드 결합','muted',20)+vt(300,85,'R–C(=O)–NH–R′','blue',31)+vl(283,103,322,103,'gold',5)+vt(300,133,'이 결합을 가수 분해','gold',20)+va(300,150,300,193)+vt(405,177,'+ H₂O','gold',24)+
+vb(20,211,240,62,'R–C(=O)–OH','green',27)+vt(300,251,'+')+vb(340,211,240,62,'H₂N–R′','green',27)};
+case '4/1/1/1':return {caption:'탄소 원자 수를 세어 보세요. 피루브산의 탄소 3개가 2개와 1개로 나뉩니다.',body:
+vt(300,30,'탄소 1개가 CO₂로 떨어져 나감','gold',22)+chain(100,90,3,60,'pink')+vt(160,145,'피루브산 · 3C','blue',21)+va(265,90,330,90)+chain(375,90,2,60)+vt(405,145,'2C','blue',22)+vt(480,98,'+')+vc(545,90,'C','pink')+vt(545,145,'CO₂','pink',22)+
+vb(20,195,250,56,'CH₃–C(=O)–COOH','blue',23)+va(280,222,320,222)+vb(330,195,250,56,'CH₃–CHO + CO₂','green',24)};
+case '4/2/1/2':return {caption:'탄소 사슬은 끊어지지 않습니다. 이중 결합에 H와 OH가 더해지는 반응입니다. 전하와 입체배치는 생략했습니다.',body:
+vt(300,29,'푸마르산의 이중 결합에 물을 부가','muted',21)+vt(300,82,'HOOC–CH=CH–COOH','blue',29)+vl(270,97,318,97,'gold',4)+va(300,114,300,166)+vt(417,144,'+ H₂O','gold',25)+vt(300,214,'HOOC–CH(OH)–CH₂–COOH','green',27)+vt(300,276,'C=C → C–C · H와 OH가 하나씩 결합','gold',21)};
+case '5/3/1/9':return sugarVisual(false);
+case '5/3/1/1':return sugarVisual(true);
+case '6/5/1/1':return {caption:'DNA의 당·인산 골격을 단순화한 그림입니다. 노란색 선은 새로 생기는 결합을 나타냅니다.',body:
+vt(300,29,'DNA의 끊어진 자리를 연결','muted',21)+vb(20,55,165,55,'DNA 조각 A','blue',21)+vt(220,90,'3′-OH','gold',22)+vt(315,90,'끊어진 곳','pink',18)+vt(410,90,'5′-P','gold',22)+vb(455,55,125,55,'조각 B','blue',21)+va(300,128,300,178)+vt(435,156,'ATP의 에너지','gold',20)+
+vb(20,204,165,55,'DNA 조각 A','green',21)+vl(185,232,455,232,'gold',5)+vb(455,204,125,55,'조각 B','green',21)+vt(320,286,'새 인산다이에스터 결합','gold',20)};
+case '6/4/1/1':return {caption:'초록색 C는 새로 더해지는 탄소입니다. ATP를 사용해 새로운 탄소–탄소 결합을 만듭니다.',body:
+chain(65,62,3,55)+vt(120,117,'피루브산 · 3C','blue',20)+vt(220,70,'+')+vc(295,62,'C','green')+vt(295,117,'HCO₃⁻','green',22)+va(345,62,390,62)+chain(420,62,4,45,'green')+
+vt(488,117,'옥살아세트산 · 4C','green',18)+vb(30,157,240,49,'ATP → ADP + Pi','gold',22)+vt(300,239,'CH₃–CO–COO⁻ → ⁻OOC–CH₂–CO–COO⁻','ink',22)+vt(300,285,'탄소 3개 + 1개 → 4개','gold',22)};
+}}
+function sugarVisual(triose){
+ const left=triose?['CH₂OH','C=O','CH₂–O–P']:['CHO','[CH(OH)]₄','CH₂–O–P'];
+ const right=triose?['CHO','CH(OH)','CH₂–O–P']:['CH₂OH','C=O','[CH(OH)]₃','CH₂–O–P'];
+ let b=vt(150,28,triose?'DHAP':'포도당 6인산','blue',21)+vt(450,28,triose?'G3P':'과당 6인산','green',21);
+ left.forEach((s,i)=>{const y=triose?85+i*66:77+i*75;b+=vt(150,y,s,i===(triose?1:0)?'gold':'blue',26);if(i<left.length-1)b+=vl(150,y+12,150,y+38)});
+ right.forEach((s,i)=>{const y=triose?85+i*66:70+i*52;b+=vt(450,y,s,i===(triose?0:1)?'gold':'green',26);if(i<right.length-1)b+=vl(450,y+10,450,y+25)});
+ b+=va(258,145,342,145)+vt(300,181,'배열 변화','gold',17)+vt(300,278,triose?'3C ↔ 3C · 인산기는 유지':'6C ↔ 6C · 인산기는 유지','muted',21);
+ return {body:b,caption:'개방 사슬의 구조를 단순화했습니다. 입체배치는 생략했으며 P는 인산기입니다. 노란색은 C=O가 있는 위치입니다.'};
+}
+function enzymeExampleFigure(ex){
+ if(typeof makeMotionFigure==='function')return makeMotionFigure(ex);
+ const data=visualFor(ex.ec);if(!data)return node('span');
+ const figure=node('figure',null,'enzyme-example-figure');
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 600 310');svg.setAttribute('role','img');svg.setAttribute('aria-label',ex.name+' 반응 도식. '+data.caption);
+ svg.innerHTML='<title>'+sx(ex.name+' 반응 도식')+'</title><g font-family="Malgun Gothic, sans-serif" font-weight="600" stroke-linecap="round" stroke-linejoin="round">'+data.body+'</g>';
+ figure.append(svg,node('figcaption',data.caption));return figure;
+}
+
+// 반응 전후의 변화를 보여 주는 수업용 모형. 실제 분자 운동이나 반응 기작의 재현은 아닙니다.
+const motionCSS=`.enzyme-motion-status{font-size:16px;font-weight:600;color:#ffd078;min-height:2em;margin:2px 4px 8px;line-height:1.5}.enzyme-motion-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0 2px}.enzyme-motion-controls button,.enzyme-motion-controls select{font:600 14px/1.3 'Malgun Gothic',sans-serif;background:#152b3f;color:#e5edf5;border:1px solid #527b9e;padding:8px 10px;border-radius:5px;cursor:pointer}.enzyme-motion-controls button:hover{background:#294d6d}.enzyme-motion-controls label{display:flex;align-items:center;gap:4px;color:#b5c9dc;font-size:14px;cursor:pointer}.enzyme-motion-figure>input[type=range]{display:block;width:100%;accent-color:#ffd078;cursor:pointer;min-height:22px;margin:0}.enzyme-motion-controls input[type=checkbox]{accent-color:#ffd078}.enzyme-motion-controls button:focus-visible,.enzyme-motion-controls select:focus-visible{outline:2px solid #ffd078;outline-offset:2px}.enzyme-motion-figure figcaption{font-size:12px!important;line-height:1.5!important}.enzyme-motion-figure svg{max-height:330px}.enzyme-detail-grid .enzyme-motion-figure{padding:10px}`;
+const clamp=v=>Math.min(1,Math.max(0,v));
+const phase=(t,a,b)=>clamp((t-a)/(b-a));
+const smooth=v=>{v=clamp(v);return v*v*(3-2*v)};
+const mix=(a,b,t)=>a+(b-a)*t;
+function mg(s,x=0,y=0,opacity=1){return `<g transform="translate(${x} ${y})" opacity="${clamp(opacity)}">${s}</g>`}
+function mp(x0,y0,x1,y1,t,bend=0){const u=smooth(t);return {x:mix(x0,x1,u),y:mix(y0,y1,u)-Math.sin(Math.PI*u)*bend}}
+function mtoken(x,y,label,color='gold',r=24){return vc(x,y,label,color,r)}
+function moving(label,x0,y0,x1,y1,t,color='gold',r=24,bend=0){const p=mp(x0,y0,x1,y1,t,bend);return mtoken(p.x,p.y,label,color,r)}
+function fadeText(x,y,a,b,t,color='blue',size=26){return vt(x,y,t<.5?a:b,t<.5?color:'green',size)}
+function motionBadge(ex,t){const active=t>.22&&t<.76;return vb(125,8,350,42,ex.name,active?'gold':'muted',ex.name.length>16?17:20)}
+function ms(t,labels){return t<.25?labels[0]:t<.76?labels[1]:labels[2]}
+function motionScene(ex,t){
+ const u=smooth(phase(t,.25,.75)),breaks=phase(t,.25,.45),formed=phase(t,.62,.82);
+ let body='',labels=['반응 전 · 기질 확인','효소가 반응을 촉진','반응 후 · 생성물 확인'];
+ switch(ex.ec){
+ case '1/11/1/6':{
+  labels=['과산화 수소 두 분자','결합이 바뀌며 원자가 재배열','물 두 분자와 산소 한 분자'];
+  const old=[[80,130],[135,130],[192,130],[250,130],[350,130],[405,130],[462,130],[520,130]];
+  const dest=[[60,195],[100,195],[420,195],[140,195],[220,195],[260,195],[465,195],[300,195]];
+  const atoms=['H','O','O','H','H','O','O','H'];
+  for(const [a,b]of [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]])body+=mg(vl(old[a][0]+13,130,old[b][0]-13,130),0,0,1-breaks);
+  for(const [a,b]of [[0,1],[1,3],[4,5],[5,7],[2,6]]){body+=mg(vl(dest[a][0]+13,195,dest[b][0]-13,195,a===2?'green':'muted'),0,0,formed);if(a===2)body+=mg(vl(433,201,452,201,'green'),0,0,formed)}
+  atoms.forEach((a,i)=>{const p=mp(...old[i],...dest[i],u,i%2?18:-15);body+=vatom(p.x,p.y+8,a,a==='O'?'pink':'ink')});
+  body+=mg(vt(175,257,'물 2H₂O','blue',22)+vt(450,257,'산소 O₂','green',22),0,0,formed);break;
+ }
+ case '1/1/1/27':{
+  labels=['피루브산 + NADH + H⁺','NADH가 전자·수소를 전달','피루브산은 환원 · NADH는 산화'];
+  body+=vb(95,80,410,64,'','blue')+fadeText(300,121,'CH₃–C(=O)–COO⁻','CH₃–CH(OH)–COO⁻',formed,'blue',28);
+  body+=fadeText(300,177,'피루브산','젖산',formed,'blue',21);
+  body+=vb(25,240,180,49,'','gold')+fadeText(115,273,'NADH','NAD⁺',breaks,'gold',23);
+  body+=mg(vt(420,273,'H⁺','gold',24),0,0,1-formed);
+  const p=mp(180,235,285,116,u,30);body+=mg(mtoken(p.x,p.y,'2e⁻','gold',28),0,0,Math.sin(Math.PI*phase(t,.2,.8)));
+  body+=mg(moving('H',420,245,340,116,u,'gold',20,30),0,0,Math.sin(Math.PI*phase(t,.2,.8)));
+  body+=vt(300,327,'전자와 수소 전달의 개념도','muted',18);break;
+ }
+ case '2/7/1/1':{
+  labels=['ATP의 말단 인산기를 확인','인산기가 포도당으로 이동','포도당 6인산 + ADP'];
+  body+=vb(30,205,145,57,'포도당','blue',22)+fadeText(350,100,'ATP','ADP',breaks,'blue',23);
+  body+=vc(335,142,'P')+vl(359,142,379,142)+vc(405,142,'P');
+  body+=mg(vl(429,142,449,142,'gold'),0,0,1-breaks);
+  body+=moving('P',475,142,215,234,u,'gold',24,60);
+  body+=mg(vl(175,234,191,234,'gold',4),0,0,formed);
+  body+=mg(vt(158,302,'포도당 6인산','green',23),0,0,formed);
+  body+=vt(300,334,'P = 인산기 · 노란 P 하나가 이동','muted',18);break;
+ }
+ case '2/6/1/1':{
+  labels=['아스파트산이 아미노기를 제공','아미노기가 다른 분자로 이동','옥살아세트산 + 글루탐산'];
+  body+=vb(25,95,235,60,'','blue')+fadeText(142,134,'아스파트산','옥살아세트산',formed,'blue',21);
+  body+=vb(330,215,245,60,'','green')+fadeText(452,254,'α-케토글루타르산','글루탐산',formed,'green',18);
+  body+=mg(vl(143,155,143,170,'gold'),0,0,1-breaks)+mg(vl(452,182,452,215,'gold'),0,0,formed);
+  body+=moving('NH₂',143,199,452,155,u,'gold',32,75);
+  body+=vt(300,325,'아미노기를 준 쪽과 받은 쪽이 모두 바뀜','muted',19);break;
+ }
+ case '3/2/1/1':{
+  labels=['연결된 녹말 사슬 + 물','물을 사용해 α-1,4 결합을 끊음','더 짧은 당 사슬로 분리'];
+  const shift=u*32;
+  for(let i=0;i<6;i++){const x=130+i*65+(i<3?-shift:shift);if(i&&i!==3)body+=vl(x-42,170,x-23,170);body+=vc(x,170,'당','blue',23)}
+  body+=mg(vl(283-shift,170,302+shift,170,'gold',4),0,0,1-breaks);
+  body+=mg(vt(300,94,'H₂O','gold',26),0,0,1-breaks);
+  body+=mg(moving('OH',286,100,270,170,u,'gold',20,20)+moving('H',314,100,320,170,u,'gold',18,20),0,0,breaks);
+  body+=mg(vt(165,251,'짧아진 사슬','green',22)+vt(450,251,'짧아진 사슬','green',22),0,0,formed);
+  body+=vt(300,324,'원 하나는 포도당 단위 · 결합 하나의 분해 모형','muted',18);break;
+ }
+ case '3/4/23/1':{
+  labels=['단백질의 펩타이드 결합 + 물','물의 H와 OH가 양쪽에 더해짐','두 펩타이드 조각으로 분리'];
+  body+=mg(vt(300,164,'R–C(=O)–NH–R′','blue',30)+vl(284,178,322,178,'gold',5),0,0,1-breaks);
+  body+=mg(vt(mix(245,165,u),215,'R–C(=O)–OH','green',25)+vt(mix(355,460,u),215,'H₂N–R′','green',25),0,0,breaks);
+  body+=mg(vt(300,93,'H₂O','gold',26),0,0,1-breaks);
+  body+=mg(moving('OH',280,95,250,180,u,'gold',22,15)+moving('H',320,95,400,180,u,'gold',19,15),0,0,breaks*(1-formed));
+  body+=vt(300,309,'노란 결합이 끊어지고 두 조각이 멀어짐','muted',19);break;
+ }
+ case '4/1/1/1':{
+  labels=['피루브산의 탄소는 3개','탄소 1개가 CO₂로 떨어짐','2C 아세트알데하이드 + 1C CO₂'];
+  body+=vc(155,165,'C')+vl(179,165,191,165)+vc(215,165,'C');
+  body+=mg(vl(239,165,251,165,'pink',4),0,0,1-breaks);
+  body+=moving('C',275,165,485,105,u,'pink',24,45);
+  const p=mp(275,165,485,105,u,45);body+=mg(vt(p.x,p.y+55,'CO₂','pink',23),0,0,breaks);
+  body+=fadeText(185,235,'피루브산 · 3C','아세트알데하이드 · 2C',formed,'blue',20);
+  body+=vt(300,306,'CH₃–CO–COOH → CH₃–CHO + CO₂','ink',23);break;
+ }
+ case '4/2/1/2':{
+  labels=['푸마르산의 C=C와 물','H와 OH가 이중 결합에 더해짐','말산 생성 · 탄소 사슬은 유지'];
+  body+=vt(75,180,'HOOC','blue',23)+vl(115,172,200,172)+vt(230,180,'CH','blue',26)+vl(255,172,345,172)+vt(370,180,'CH','blue',26)+vl(397,172,479,172)+vt(530,180,'COOH','blue',23);
+  body+=mg(vl(255,180,345,180,'gold',3),0,0,1-breaks);
+  body+=mg(vt(300,97,'H₂O','gold',26),0,0,1-breaks);
+  body+=mg(moving('OH',280,100,230,245,u,'gold',24,30)+moving('H',320,100,370,245,u,'gold',22,30),0,0,breaks);
+  body+=mg(vl(230,186,230,220,'gold')+vl(370,186,370,222,'gold'),0,0,formed);
+  body+=vt(300,320,'물이 더해져도 분자가 두 조각으로 갈라지지 않음','muted',18);break;
+ }
+ case '5/3/1/9':case '5/3/1/1':{
+  const tri=ex.ec==='5/3/1/1';labels=[tri?'DHAP · 탄소 3개':'포도당 6인산 · 탄소 6개','분자 안의 결합과 수소 배치가 달라짐',tri?'G3P · 탄소 3개 그대로':'과당 6인산 · 탄소 6개 그대로'];
+  const change=smooth(phase(t,.4,.7)),ys=tri?[110,180,250]:[95,150,205,260];
+  const from=tri?['CH₂OH','C=O','CH₂–O–P']:['CHO','CH(OH)','[CH(OH)]₃','CH₂–O–P'];
+  const to=tri?['CHO','CH(OH)','CH₂–O–P']:['CH₂OH','C=O','[CH(OH)]₃','CH₂–O–P'];
+  from.forEach((s,i)=>{body+=fadeText(300,ys[i],s,to[i],change,i<2?'gold':'blue',27);if(i<ys.length-1)body+=vl(300,ys[i]+12,300,ys[i+1]-26)});
+  body+=mg(moving('H',405,tri?110:150,405,tri?180:95,u,'gold',20,18),0,0,Math.sin(Math.PI*phase(t,.2,.8)));
+  body+=vt(150,183,'같은 분자','muted',19)+vt(300,329,'개방 사슬 단순화 · 입체배치 생략 · P = 인산기','muted',17);break;
+ }
+ case '6/5/1/1':{
+  labels=['DNA 골격의 끊어진 자리','ATP를 사용해 새로운 결합 형성','DNA 조각들이 하나로 연결'];
+  const shift=u*40;
+  body+=vb(30+shift,150,170,60,'DNA 조각 A','blue',21)+vb(400-shift,150,170,60,'DNA 조각 B','blue',21);
+  body+=mg(vt(220+shift,135,'3′-OH','gold',20)+vt(380-shift,135,'5′-P','gold',20),0,0,1-formed);
+  body+=mg(vl(240,180,240+120*formed,180,'gold',5),0,0,formed);
+  body+=mg(moving('ATP',300,87,300,180,u,'gold',28),0,0,1-formed);
+  body+=mg(vt(300,257,'새 인산다이에스터 결합','gold',22),0,0,formed);
+  body+=vt(300,321,'ATP → AMP + PPi · DNA 골격의 연결 모형','muted',18);break;
+ }
+ case '6/4/1/1':{
+  labels=['피루브산 3C + HCO₃⁻의 탄소 1개','ATP를 사용해 탄소–탄소 결합 형성','옥살아세트산 · 탄소 4개'];
+  body+=chain(110,190,3,60);
+  body+=moving('C',480,105,290,190,u,'green',24,45);
+  body+=mg(vl(254,190,266,190,'green',4),0,0,formed);
+  const p=mp(480,105,290,190,u,45);body+=mg(vt(p.x,p.y-40,'HCO₃⁻','green',23),0,0,1-formed);
+  body+=fadeText(200,262,'피루브산 · 3C','옥살아세트산 · 4C',formed,'blue',23);
+  body+=fadeText(140,105,'ATP','ADP + Pi',formed,'gold',22);
+  body+=vt(300,324,'탄소 수 변화의 모형 · 새 탄소를 초록색으로 표시','muted',18);break;
+ }
+ }
+ return {body:motionBadge(ex,t)+body,label:ms(t,labels)};
+}
+function stopExampleMotions(container){container?.querySelectorAll('.enzyme-example-figure').forEach(f=>f.destroyMotion?.())}
+function makeMotionFigure(ex){
+ const data=visualFor(ex.ec),figure=node('figure',null,'enzyme-example-figure enzyme-motion-figure');
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 600 350');svg.setAttribute('role','img');svg.setAttribute('aria-label',ex.name+' 반응 애니메이션');
+ const status=node('div',null,'enzyme-motion-status');
+ const controls=node('div',null,'enzyme-motion-controls');
+ const play=node('button','일시정지'),reset=node('button','처음부터');play.type=reset.type='button';play.setAttribute('aria-label',ex.name+' 일시정지');reset.setAttribute('aria-label',ex.name+' 처음부터');
+ const speed=document.createElement('select');speed.setAttribute('aria-label',ex.name+' 재생 속도');for(const [value,label]of [[.5,'0.5배속'],[1,'1배속'],[2,'2배속']]){const option=node('option',label);option.value=value;option.selected=value===1;speed.append(option)}
+ const loopLabel=node('label'),loop=document.createElement('input');loop.type='checkbox';loop.checked=true;loopLabel.append(loop,document.createTextNode('반복'));
+ const range=document.createElement('input');range.type='range';range.min='0';range.max='1000';range.step='1';range.value='0';range.setAttribute('aria-label',ex.name+' 반응 진행');
+ controls.append(play,reset,speed,loopLabel);figure.append(svg,status,range,controls,node('figcaption','반응 전후의 변화를 단순화한 모형입니다. '+data.caption));
+ let time=0,playing=true,destroyed=false,raf=0,last=0,lastPaint=0;
+ function render(){const scene=motionScene(ex,time);svg.innerHTML='<title>'+sx(ex.name+' · '+scene.label)+'</title><g font-family="Malgun Gothic, sans-serif" font-weight="600" stroke-linecap="round" stroke-linejoin="round">'+scene.body+'</g>';status.textContent=scene.label;range.value=String(Math.round(time*1000));figure.dataset.motionTime=time.toFixed(4)}
+ function setPlay(value){playing=value;play.textContent=value?'일시정지':'재생';play.setAttribute('aria-label',ex.name+' '+play.textContent)}
+ play.onclick=()=>{if(time>=1)time=0;setPlay(!playing);render()};reset.onclick=()=>{time=0;setPlay(true);render()};
+ range.addEventListener('input',()=>{setPlay(false);time=Number(range.value)/1000;render()});
+ function tick(now){if(destroyed)return;if(!figure.isConnected||!figure.closest('dialog')?.open){figure.destroyMotion();return}if(last&&playing){time+=(now-last)/8500*Number(speed.value);if(time>=1){if(loop.checked)time%=1;else{time=1;setPlay(false);render()}}}last=now;if(playing&&now-lastPaint>32){render();lastPaint=now}raf=requestAnimationFrame(tick)}
+ figure.destroyMotion=()=>{destroyed=true;cancelAnimationFrame(raf)};render();raf=requestAnimationFrame(tick);return figure;
+}
+
+let dialog;
+function node(tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e}
+function show(group){
+ stopExampleMotions(dialog);
+ if(!dialog){dialog=node('dialog',null,'enzyme-detail-dialog');dialog.dataset.enzymeUi='';document.body.append(dialog);dialog.addEventListener('keydown',e=>e.stopPropagation());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}})}
+ dialog.onclose=()=>stopExampleMotions(dialog);dialog.replaceChildren();
+ const header=node('div',null,'enzyme-detail-header'),title=node('h2',group.title+' · 두 예시 풀이');title.id='enzyme-detail-title';dialog.setAttribute('aria-labelledby',title.id);
+ const close=node('button','닫기 ×');close.type='button';close.onclick=()=>dialog.close();header.append(title,close);dialog.append(header,node('p',group.point,'enzyme-detail-point'));
+ const grid=node('div',null,'enzyme-detail-grid');
+ group.examples.forEach((ex,i)=>{const article=node('article');article.append(node('h3',(i+1)+'. '+ex.name),enzymeExampleFigure(ex),node('div',ex.reaction,'enzyme-detail-reaction'));const more=node('details',null,'enzyme-detail-more');more.append(node('summary','설명 더 보기'),node('h4','어떤 반응인가요?'),node('p',ex.explain),node('h4','이 종류로 분류하는 이유와 의미'),node('p',ex.why));article.append(more);const a=node('a','반응 정보 · IUBMB');a.href='https://iubmb.qmul.ac.uk/enzyme/EC'+ex.ec+'.html';a.target='_blank';a.rel='noopener noreferrer';article.append(a);grid.append(article)});
+ dialog.append(grid);dialog.showModal();dialog.scrollTop=0;close.focus();
+}
+function decorate(){
+ const cards=[...document.querySelectorAll('.stage .ch-pillars__card')];
+ for(const card of cards){if(card.querySelector('.enzyme-detail-button'))continue;const text=card.innerText;const group=groups.find(g=>text.includes(g.title));if(!group)continue;
+ const button=node('button','예시 자세히 보기 +','enzyme-detail-button');button.type='button';button.setAttribute('aria-label',group.title+' 예시 자세히 보기');button.onclick=e=>{e.stopPropagation();show(group)};card.append(button)}
+}
+function install(){
+ if(!document.querySelector('.ds-app')){setTimeout(install,100);return}
+ const motionStyle=node('style');motionStyle.dataset.enzymeUi='';motionStyle.textContent=motionCSS;document.head.append(motionStyle);
+ const style=node('style');style.dataset.enzymeUi='';style.textContent=`
+.enzyme-detail-button{align-self:flex-start;margin-top:8px;padding:7px 12px;border:1px solid #79ade3;border-radius:5px;background:#102337;color:#e5edf5;font:600 15px/1.2 'Malgun Gothic',sans-serif;cursor:pointer}.enzyme-detail-button:hover,.enzyme-detail-button:focus-visible{background:#284763;outline:2px solid #f5c56d;outline-offset:2px}
+.enzyme-detail-dialog{box-sizing:border-box;width:min(1120px,94vw);max-height:90vh;padding:28px;border:1px solid #79ade3;border-radius:12px;background:#0b1521;color:#e5edf5;font:18px/1.65 'Malgun Gothic',sans-serif;box-shadow:0 20px 80px #0009}.enzyme-detail-dialog::backdrop{background:#000b}.enzyme-detail-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.enzyme-detail-header h2{margin:0;font-size:25px;line-height:1.4;color:#fff}.enzyme-detail-header button{flex:none;padding:8px 14px;background:#172c40;color:#fff;border:1px solid #79ade3;border-radius:5px;font:600 16px 'Malgun Gothic',sans-serif;cursor:pointer}.enzyme-detail-point{margin:16px 0 22px;color:#9cc8f3}.enzyme-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.enzyme-detail-grid article{padding:20px;border:1px solid #34485e;border-radius:8px;background:#0f1e2d;min-width:0}.enzyme-detail-grid h3{margin:0 0 16px;font-size:22px;color:#f5c56d}.enzyme-detail-reaction{padding:14px;background:#060f19;border-left:3px solid #79ade3;white-space:pre-wrap;overflow-wrap:anywhere;font-size:18px;line-height:1.6}.enzyme-detail-grid h4{margin:20px 0 6px;font-size:16px;color:#9cc8f3}.enzyme-detail-grid p{margin:0}.enzyme-detail-grid a{display:inline-block;margin-top:18px;color:#9fb4c9;font-size:13px}@media(max-width:760px){.enzyme-detail-dialog{padding:18px;font-size:16px}.enzyme-detail-grid{grid-template-columns:1fr}.enzyme-detail-header h2{font-size:21px}}@media print{.enzyme-detail-button,.enzyme-detail-dialog{display:none!important}}
+`;style.textContent+=`.enzyme-detail-dialog{width:min(1320px,96vw)}.enzyme-example-figure{margin:0 0 16px;padding:10px;border:1px solid #29425a;border-radius:8px;background:#07111c}.enzyme-example-figure svg{display:block;width:100%;height:auto;overflow:visible}.enzyme-example-figure figcaption{padding:8px 4px 0;font-size:14px;line-height:1.55;color:#a9bacb}.enzyme-detail-more{margin-top:16px;border-top:1px solid #34485e;padding-top:12px}.enzyme-detail-more summary{color:#9cc8f3;cursor:pointer;font-size:16px;font-weight:600}.enzyme-detail-more summary:focus-visible{outline:2px solid #ffd078;outline-offset:4px}.enzyme-detail-header{position:sticky;top:-28px;z-index:2;background:#0b1521;padding:8px 0}.enzyme-detail-grid h3{font-size:21px}.enzyme-detail-reaction{font-size:17px;padding:11px}.enzyme-detail-grid a{margin-top:12px}@media(max-width:760px){.enzyme-detail-header{top:-18px}.enzyme-example-figure figcaption{font-size:13px}}`;document.head.append(style);decorate();new MutationObserver(decorate).observe(document.getElementById('root'),{childList:true,subtree:true});
+}
+setTimeout(install,100);
+})();
+
+</script>
+<script data-enzyme-inhibition-simulation>
+// 같은 Michaelis–Menten 모형으로 결합 점유, 반응 속도, 두 그래프를 함께 계산합니다.
+(()=>{
+const C={bg:'#07111c',panel:'#0e1e2c',text:'#e5edf5',muted:'#a9bacb',enzyme:'#83b9f1',sub:'#ffd078',inhib:'#f299ad',prod:'#96d9b5',comp:'#83b9f1',non:'#e5a7ef',control:'#dbe4ec'};
+const state={s:1,i:2,moving:true,auto:false,time:0};
+const KM=2,KI=1,VMAX=100,N=4,MAX_S=60;
+let dialog,ui,raf=0,last=0,paint=0,autoPosition=1;
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
+const bound=(v,a,b)=>Math.min(b,Math.max(a,Number(v)||0));
+const num=(n,d=1)=>Number(n).toFixed(d);
+function values(s=state.s,i=state.i){const alpha=1+i/KI;const v0=VMAX*s/(KM+s),vc=VMAX*s/(alpha*KM+s),vn=v0/alpha;return{alpha,v0,vc,vn,ec:s>0?100*(1-vc/v0):null,en:s>0?100*(1-vn/v0):null,maxNon:VMAX/alpha,compI:(i/KI)/(1+i/KI+s/KM),compS:(s/KM)/(1+i/KI+s/KM),nonI:(i/KI)/alpha,nonS:s/(KM+s)}}
+function occupancy(mode,v){return Array.from({length:N},(_,n)=>{const rank=(n+.5)/N;return{inhibited:rank<(mode==='comp'?v.compI:v.nonI),substrate:state.s>0}})}
+function stop(){cancelAnimationFrame(raf);raf=0;state.auto=false;if(ui)ui.auto.textContent='농도 자동 증가'}
+function button(text,fn,cls){const b=el('button',cls,text);b.type='button';b.onclick=fn;return b}
+function makeControl(labelText,max,step,value,onchange,aria){const wrap=el('label','eis-slider');const top=el('span','eis-label',labelText);const output=el('output',null,num(value));top.append(output);const input=el('input');input.type='range';input.min='0';input.max=String(max);input.step=String(step);input.value=String(value);input.setAttribute('aria-label',aria);input.oninput=()=>onchange(input.value);wrap.append(top,input);return{wrap,output,input}}
+function modelDetails(){const d=el('details','eis-model');d.append(el('summary',null,'계산 모형과 비교 기준'));const p=el('p',null,'순수 비경쟁적 저해를 가정한 모형입니다. 효소 수, Km, Ki, 저해제가 없는 경우의 최대 반응 속도는 고정하고, 기질과 저해제의 상대 농도를 바꿉니다.');d.append(p);const pre=el('div','eis-formula','α = 1 + [I]/Ki\n저해제 없음: v₀ = Vmax[S]/(Km + [S])\n경쟁적 저해: v = Vmax[S]/(αKm + [S])\n비경쟁적 저해: v = (Vmax/α)[S]/(Km + [S])\n저해 효과(%) = 100 × (1 − v/v₀)\nKm = 2, Ki = 1, 저해제가 없는 경우의 Vmax = 100 (상대값)');d.append(pre);const note=el('p',null,'4개의 효소는 결합 위치와 저해 여부를 비교하는 대표 모형입니다. 입자 수와 움직임은 단순화했으며, 반응 속도와 그래프는 위의 연속 농도 모형으로 계산합니다. [S]=0에서는 반응이 없으므로 저해 효과의 비율을 표시하지 않습니다.');d.append(note);const a=el('a',null,'반응 속도 모형 · NCATS');a.href='https://www.ncbi.nlm.nih.gov/books/NBK92001/';a.target='_blank';a.rel='noopener noreferrer';d.append(a);return d}
+function build(){
+ const simpleStyle=el('style');simpleStyle.dataset.enzymeUi='';simpleStyle.textContent=`
+.eis-dialog{width:min(1320px,97vw)}.eis-control-sliders{grid-template-columns:1fr}.eis-control-sliders .eis-label output{display:none}.eis-presets{justify-content:flex-start}.eis-extra{margin-top:7px;font-size:13px;color:#a9bacb}.eis-extra summary{cursor:pointer;width:fit-content}.eis-extra-body{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:10px}.eis-extra-body>.eis-slider{width:min(420px,100%);margin-right:10px}.eis-panel-desc{display:none}.eis-panel h3{font-size:23px!important;margin-bottom:8px}.eis-count{min-height:1.5em;margin:9px 0!important;font-size:16px!important;font-weight:600;text-align:center;color:#e5edf5}.eis-metrics{grid-template-columns:1fr 1fr}.eis-metrics>div:last-child{display:none}.eis-metrics>div:nth-child(2){border:0}.eis-metrics strong{font-size:25px!important}.eis-metrics>div:nth-child(2) strong{font-size:28px!important}.eis-tabs{display:flex;justify-content:center;gap:8px;margin:12px 0 6px}.eis-tabs button[aria-selected=true]{background:#284b67;color:#ffd078;border-color:#ffd078}.eis-plots{display:block}.eis-plot[hidden]{display:none!important}.eis-plot h3{display:none}.eis-plot svg{max-width:940px;height:205px;margin:auto}.eis-plot p{text-align:center;font-size:12px}.eis-graph-legend{margin:6px 0 7px}.eis-explanation{margin:10px 0!important;text-align:center;font-size:16px!important}.eis-model{padding-top:8px}.eis-number{width:80px}.eis-molecules{margin-top:0}@media(max-width:760px){.eis-tabs button{font-size:13px}.eis-count{font-size:14px!important}.eis-panel h3{font-size:21px!important}.eis-explanation{font-size:14px!important}.eis-plot svg{height:auto}.eis-extra-body{align-items:center}}
+`;document.head.append(simpleStyle);
+ dialog=el('dialog','eis-dialog');dialog.dataset.enzymeUi='';dialog.setAttribute('aria-labelledby','eis-title');dialog.addEventListener('keydown',e=>e.stopPropagation());dialog.addEventListener('close',stop);
+ const head=el('header','eis-header');const titles=el('div');titles.append(el('p','eis-eyebrow','효소 저해 비교 실험'));const h=el('h2',null,'기질을 늘리면 저해 효과가 달라질까?');h.id='eis-title';titles.append(h);head.append(titles,button('닫기 ×',()=>dialog.close(),'eis-close'));dialog.append(head);
+ const content=el('div','eis-content');
+ const controls=el('section','eis-controls');
+ const sc=makeControl('기질 농도 [S]',MAX_S,.5,state.s,v=>setS(v),'기질 농도');const ic=makeControl('저해제 농도 [I]',4,.25,state.i,v=>{state.i=bound(v,0,4);refresh()},'저해제 농도');
+ const sNumber=el('input','eis-number');sNumber.type='number';sNumber.min='0';sNumber.max='60';sNumber.step='.5';sNumber.value=state.s;sNumber.setAttribute('aria-label','기질 농도 직접 입력');sNumber.onchange=()=>{setS(sNumber.value);sNumber.value=num(state.s)};sc.wrap.querySelector('.eis-label').append(sNumber);
+ const presets=el('div','eis-presets');presets.append(button('기질 적게',()=>setS(1)),button('기질 많이',()=>setS(60)));
+ const auto=button('농도 자동 증가',()=>{state.auto=!state.auto;if(state.auto&&state.s>=MAX_S)state.s=0;autoPosition=state.s;refresh()});const pause=button('모션 일시정지',()=>{state.moving=!state.moving;refresh()});const reset=button('처음으로',()=>{Object.assign(state,{s:1,i:2,moving:true,auto:false,time:0});refresh()});
+ presets.append(auto,pause);const cTop=el('div','eis-control-sliders');cTop.append(sc.wrap);const extra=el('details','eis-extra');extra.append(el('summary',null,'추가 조절'));const extraBody=el('div','eis-extra-body');extraBody.append(ic.wrap,button('중간 농도',()=>setS(8)),button('기질 +5',()=>setS(state.s+5)),reset);extra.append(extraBody);controls.append(cTop,presets,extra);content.append(controls);
+ const legend=el('div','eis-legend');[['enzyme','효소'],['sub','기질'],['inhib','저해제'],['prod','생성물']].forEach(([c,t])=>{const item=el('span');const dot=el('i');dot.style.background=C[c];item.append(dot,document.createTextNode(t));legend.append(item)});legend.append(el('span','eis-fixed','효소 4개씩 · 저해제 농도 동일'));content.append(legend);
+ const models=el('div','eis-model-grid');const panels={};
+ for(const [mode,title,desc]of [['comp','경쟁적 저해','활성 부위를 두고 기질과 저해제가 경쟁'],['non','비경쟁적 저해','다른 부위에 저해제가 붙으면 촉매 작용 억제']]){
+  const article=el('article','eis-panel eis-'+mode);article.append(el('h3',null,title),el('p','eis-panel-desc',desc));const canvas=el('canvas','eis-molecules');canvas.width=720;canvas.height=190;canvas.setAttribute('role','img');
+  const metrics=el('div','eis-metrics');const speed=el('strong'),effect=el('strong'),maximum=el('strong');for(const [name,value]of [['현재 반응 속도',speed],['저해 효과',effect],['최대 속도 Vmax',maximum]]){const metric=el('div');metric.append(el('span',null,name),value);metrics.append(metric)}
+  const count=el('p','eis-count');article.append(canvas,count,metrics);models.append(article);panels[mode]={article,canvas,speed,effect,maximum,count,ctx:canvas.getContext('2d')};
+ }
+ content.append(models);
+ const plots=el('div','eis-plots');const graphs={};const tabs=el('div','eis-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','그래프 종류');const graphSections={};for(const [key,title,caption]of [['rate','기질 농도에 따른 반응 속도','점선: 저해제 없음 · 색점: 현재 농도에서의 속도'],['effect','기질 농도에 따른 저해 효과','저해 효과 = 저해제가 없을 때 대비한 속도 감소율 (%)']]){const section=el('section','eis-plot');section.id='eis-graph-'+key;section.setAttribute('role','tabpanel');section.hidden=key!=='rate';graphSections[key]=section;const tab=button(key==='rate'?'반응 속도 그래프':'저해 효과 그래프',()=>{for(const [k,s]of Object.entries(graphSections))s.hidden=k!==key;tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.graph===key)))});tab.dataset.graph=key;tab.setAttribute('role','tab');tab.setAttribute('aria-selected',String(key==='rate'));tab.setAttribute('aria-controls',section.id);tabs.append(tab);section.append(el('h3',null,title));const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 680 272');svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('role','img');svg.setAttribute('aria-label',title);section.append(svg,el('p',null,caption));plots.append(section);graphs[key]=svg;bindGraph(svg)}content.append(tabs,plots);
+ const explanation=el('p','eis-explanation');content.append(explanation);content.append(el('p','eis-important','비경쟁적 저해에서도 기질이 늘면 반응 속도는 증가합니다. 하지만 저해제가 없을 때보다 낮은 최대 속도가 유지되며, 이 모형에서는 속도 감소율이 일정합니다.'));
+ const graphLegend=el('div','eis-graph-legend');for(const [c,t]of [['control','저해제 없음'],['comp','경쟁적 저해'],['non','비경쟁적 저해']]){const l=el('span',null,t);l.style.color=C[c];graphLegend.append(l)}plots.before(graphLegend);
+ const details=modelDetails();details.append(content.querySelector('.eis-important'));content.append(details);dialog.append(content);document.body.append(dialog);
+ ui={sc,ic,sNumber,auto,pause,panels,graphs,explanation};
+}
+function setS(value,fromAuto=false){state.s=Math.round(bound(value,0,MAX_S)*2)/2;if(!fromAuto)state.auto=false;refresh()}
+function bindGraph(svg){let dragging=false;const apply=e=>{const rect=svg.getBoundingClientRect();const x=(e.clientX-rect.left)*680/rect.width;setS(Math.round(bound((x-57)/595,0,1)*MAX_S*2)/2)};svg.addEventListener('pointerdown',e=>{dragging=true;svg.setPointerCapture(e.pointerId);apply(e)});svg.addEventListener('pointermove',e=>{if(dragging)apply(e)});svg.addEventListener('pointerup',()=>dragging=false);svg.addEventListener('pointercancel',()=>dragging=false)}
+function refresh(){if(!ui)return;const v=values();ui.sc.input.value=state.s;ui.sc.output.textContent=num(state.s);if(document.activeElement!==ui.sNumber)ui.sNumber.value=num(state.s);ui.ic.input.value=state.i;ui.ic.output.textContent=num(state.i,2);ui.auto.textContent=state.auto?'자동 증가 멈추기':'농도 자동 증가';ui.pause.textContent=state.moving?'모션 일시정지':'모션 재생';ui.auto.setAttribute('aria-pressed',String(state.auto));ui.pause.setAttribute('aria-pressed',String(!state.moving));
+ for(const [mode,key,eff]of [['comp','vc','ec'],['non','vn','en']]){const p=ui.panels[mode],cells=occupancy(mode,v),inhibited=cells.filter(c=>c.inhibited).length;p.speed.textContent=num(v[key]);p.effect.textContent=v[eff]==null?'—':num(v[eff])+'%';p.maximum.textContent=num(mode==='comp'?VMAX:v.maxNon);p.count.textContent=state.s===0?'기질 없음 → 반응 없음':state.i===0?'저해제 없음 → 정상적으로 반응':mode==='comp'?(state.s<8?'기질이 적으면 저해제가 결합하기 쉬움':'기질이 많아지면 저해제 대신 결합'):'기질을 늘려도 다른 부위의 저해는 유지';p.article.dataset.speed=v[key].toFixed(6);p.article.dataset.effect=v[eff]==null?'undefined':v[eff].toFixed(6);p.article.dataset.inhibited=String(inhibited);p.canvas.setAttribute('aria-label',`${mode==='comp'?'경쟁적':'비경쟁적'} 저해 대표 모식도. 효소 4개, 기질 농도 ${num(state.s)}, 저해제 결합 ${inhibited}개, 반응 속도 ${num(v[key])}.`)}
+ ui.explanation.textContent=state.s===0?'기질을 넣어 두 반응을 비교해 보세요.':state.i===0?'저해제가 없으면 두 반응 속도는 같습니다.':'기질 농도 ↑  →  경쟁적 저해 효과 ↓  /  비경쟁적 저해 효과 유지';
+ drawPlots();drawMolecules();
+}
+function svgText(x,y,text,color=C.muted,size=15,anchor='middle'){return `<text x="${x}" y="${y}" fill="${color}" text-anchor="${anchor}" font-size="${size}">${text}</text>`}
+function drawPlots(){
+ const left=57,right=652,top=24,bottom=213,w=right-left,h=bottom-top;const X=s=>left+s/MAX_S*w,Y=v=>bottom-v/100*h;
+ const v=values();for(const [type,svg]of Object.entries(ui.graphs)){
+  let out='';for(const n of [0,25,50,75,100]){const y=Y(n);out+=`<path d="M${left} ${y}H${right}" stroke="#253d52"/>`+svgText(left-10,y+5,n,C.muted,14,'end')}
+  for(const s of [0,10,20,30,40,50,60])out+=svgText(X(s),235,s,C.muted,14);
+  out+=`<path d="M${left} ${top}V${bottom}H${right}" stroke="#7d98af" fill="none"/>`+svgText(352,263,'기질 농도 [S] (상대값)',C.muted,15)+svgText(left,16,type==='rate'?'상대 반응 속도':'속도 감소율 (%)',C.muted,15,'start');
+  for(const [key,color]of (type==='rate'?[['v0',C.control],['vc',C.comp],['vn',C.non]]:[['ec',C.comp],['en',C.non]])){
+   let d='';for(let j=0;j<=240;j++){const s=j/240*MAX_S,val=values(s||.000001)[key];d+=(j?'L':'M')+X(s).toFixed(2)+' '+Y(val).toFixed(2)}out+=`<path d="${d}" fill="none" stroke="${color}" stroke-width="3" ${key==='v0'?'stroke-dasharray="6 5"':''}/>`;
+  }
+  if(type==='rate'){out+=`<path d="M${left} ${Y(100)}H${right}" stroke="${C.control}" opacity=".35" stroke-dasharray="3 6"/><path d="M${left} ${Y(v.maxNon)}H${right}" stroke="${C.non}" opacity=".3" stroke-dasharray="3 6"/>`}
+  out+=`<path d="M${X(state.s)} ${top}V${bottom}" stroke="#ffd078" stroke-dasharray="4 4" opacity=".8"/>`;
+  for(const [key,color]of(type==='rate'?[['v0',C.control],['vc',C.comp],['vn',C.non]]:[['ec',C.comp],['en',C.non]])){if(v[key]!=null)out+=`<circle cx="${X(state.s)}" cy="${Y(v[key])}" r="5" fill="${color}" stroke="#07111c" stroke-width="2"/>`}
+  svg.innerHTML='<g font-family="Malgun Gothic,sans-serif">'+out+'</g>';svg.dataset.substrate=state.s;
+ }
+}
+function polygon(ctx,x,y,color,r=7){ctx.beginPath();for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;const px=x+r*Math.cos(a),py=y+r*Math.sin(a);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fillStyle=color;ctx.fill()}
+function enzyme(ctx,x,y,inhibited,mode){ctx.save();ctx.translate(x,y);ctx.beginPath();ctx.moveTo(-24,-21);ctx.lineTo(-10,-21);ctx.lineTo(-10,-10);ctx.lineTo(0,-4);ctx.lineTo(10,-10);ctx.lineTo(10,-21);ctx.lineTo(24,-21);ctx.quadraticCurveTo(31,-21,31,-13);ctx.lineTo(31,17);ctx.quadraticCurveTo(31,24,22,24);ctx.lineTo(-22,24);ctx.quadraticCurveTo(-31,24,-31,17);ctx.lineTo(-31,-13);ctx.quadraticCurveTo(-31,-21,-24,-21);ctx.closePath();ctx.fillStyle=inhibited&&mode==='non'?'#243344':'#173a57';ctx.fill();ctx.strokeStyle=inhibited&&mode==='non'?'#a3769a':C.enzyme;ctx.lineWidth=2;ctx.stroke();if(inhibited){if(mode==='comp')polygon(ctx,0,-13,C.inhib,9);else{ctx.beginPath();ctx.arc(32,5,8,0,2*Math.PI);ctx.fillStyle=C.inhib;ctx.fill();ctx.strokeStyle=C.inhib;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-7,9);ctx.lineTo(7,20);ctx.moveTo(7,9);ctx.lineTo(-7,20);ctx.stroke()}}ctx.restore()}
+function drawMolecules(){if(!ui)return;const v=values(),sec=state.time;for(const [mode,p]of Object.entries(ui.panels)){
+ const ctx=p.ctx;ctx.clearRect(0,0,720,190);ctx.fillStyle=C.bg;ctx.fillRect(0,0,720,190);
+ const count=state.s===0?0:Math.round(2+state.s/MAX_S*10);p.canvas.dataset.substrateParticles=count;
+ for(let j=0;j<count;j++){const x=35+((j*107+sec*12)%650),y=(j%2?176:23)+Math.sin(sec*.8+j)*5;ctx.globalAlpha=.85;polygon(ctx,x,y,C.sub,7)}ctx.globalAlpha=1;
+ const cells=occupancy(mode,v);for(let j=0;j<N;j++){
+  const x=90+j*180,y=95,c=cells[j],cycle=(sec*v.nonS/2.5+j*.31)%1;
+  ctx.save();ctx.translate(x,y);ctx.scale(1.8,1.8);enzyme(ctx,0,0,c.inhibited,mode);
+  if(c.substrate){
+   if(c.inhibited&&mode==='comp'){polygon(ctx,-25+Math.sin(cycle*Math.PI)*8,-35+Math.sin(cycle*Math.PI)*8,C.sub,7)}
+   else if(c.inhibited){if(cycle<.65)polygon(ctx,0,-13,C.sub,8)}
+   else if(cycle<.65){const u=Math.min(1,cycle/.3);polygon(ctx,-28*(1-u),-13-25*(1-u),C.sub,8)}
+   else{const d=(cycle-.65)/.35;for(let k=0;k<2;k++){ctx.beginPath();ctx.arc(19+d*18+k*8,6+d*12+k*6,4.3,0,Math.PI*2);ctx.fillStyle=C.prod;ctx.globalAlpha=1-d*.4;ctx.fill()}ctx.globalAlpha=1}
+  }
+  ctx.restore();ctx.textAlign='center';ctx.font='16px Malgun Gothic';ctx.fillStyle=c.inhibited?C.inhib:C.prod;ctx.fillText(c.inhibited?'저해제 결합':state.s>0?'반응 가능':'기질 대기',x,154);
+ }
+ const free=state.i>0?N-cells.filter(c=>c.inhibited).length:0;for(let j=0;j<free;j++){const x=42+j*32,y=175;if(mode==='comp')polygon(ctx,x,y,C.inhib,7);else{ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle=C.inhib;ctx.fill()}}
+ }}
+function tick(now){if(!dialog?.open)return;const dt=last?Math.min(.1,(now-last)/1000):0;last=now;if(state.moving)state.time+=dt;if(state.auto){autoPosition=Math.min(MAX_S,autoPosition+dt*3.3);state.s=Math.round(autoPosition*2)/2;if(autoPosition===MAX_S)state.auto=false;if(now-paint>55){refresh();paint=now}}else if(now-paint>32){drawMolecules();paint=now}raf=requestAnimationFrame(tick)}
+function open(){if(!dialog)build();dialog.showModal();dialog.scrollTop=0;last=0;paint=0;refresh();raf=requestAnimationFrame(tick);dialog.querySelector('.eis-close').focus()}
+function decorate(){const title=document.querySelector('.stage .page-title')?.textContent||'';if(!['기질을 늘렸을 때 저해 효과는?','저해제는 효소의 작용을 방해합니다'].includes(title.trim()))return;const prose=document.querySelector('.stage .body-page__mediaLayout .prose')||document.querySelector('.stage .prose');if(prose&&!prose.querySelector('[data-inhibition-launch]')){const b=button('기질 농도 조절 시뮬레이션 ↗',open,'eis-launch');b.dataset.inhibitionLaunch='';prose.append(b)}}
+function install(){if(!document.getElementById('root')){setTimeout(install,100);return}const style=el('style');style.dataset.enzymeUi='';style.textContent=`
+.eis-launch{display:block;margin-top:14px;padding:11px 16px;border:1px solid #ffd078;border-radius:6px;background:#18334a;color:#ffd078;font:700 17px/1.35 'Malgun Gothic',sans-serif;cursor:pointer}.eis-launch:hover{background:#2b4c68}.eis-dialog{box-sizing:border-box;width:min(1500px,97vw);max-height:95vh;margin:auto;padding:0;border:1px solid #688fb3;border-radius:12px;background:#09141f;color:#e5edf5;font:16px/1.5 'Malgun Gothic',sans-serif;box-shadow:0 24px 100px #000b}.eis-dialog *{box-sizing:border-box}.eis-dialog::backdrop{background:#000c}.eis-header{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;background:#0a1825;border-bottom:1px solid #34516a}.eis-header h2{margin:0;font-size:26px;line-height:1.35}.eis-eyebrow{margin:0 0 3px;color:#83b9f1;font-size:13px}.eis-dialog button{font:600 14px/1.35 'Malgun Gothic',sans-serif;color:#e5edf5;background:#183248;border:1px solid #547a9b;border-radius:5px;padding:8px 12px;cursor:pointer}.eis-dialog button:hover{background:#2d506c}.eis-dialog button[aria-pressed=true]{border-color:#ffd078;color:#ffd078}.eis-dialog button:focus-visible,.eis-launch:focus-visible{outline:2px solid #ffd078;outline-offset:3px}.eis-close{flex:none}.eis-content{padding:18px 24px 22px}.eis-controls{padding:14px 18px;border:1px solid #3b5265;border-radius:8px;background:#102333}.eis-control-sliders{display:grid;grid-template-columns:1.7fr 1fr;gap:32px}.eis-slider{display:block;min-width:0}.eis-label{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:600}.eis-label output{color:#ffd078;font-variant-numeric:tabular-nums}.eis-slider input[type=range]{width:100%;display:block;accent-color:#ffd078;min-height:24px;cursor:pointer}.eis-number{width:80px;margin-left:auto;background:#07111c;color:#ffd078;border:1px solid #7594ae;border-radius:4px;padding:4px 6px;font:16px 'Malgun Gothic',sans-serif}.eis-presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.eis-control-hint{font-size:13px;color:#a9bacb;margin:9px 0 0}.eis-legend{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin:14px 0 10px;font-size:14px;color:#c8d7e5}.eis-legend span{display:flex;align-items:center;gap:6px}.eis-legend i{width:12px;height:12px;display:inline-block;border-radius:50%}.eis-fixed{margin-left:auto;color:#a9bacb}.eis-model-grid,.eis-plots{display:grid;grid-template-columns:1fr 1fr;gap:16px}.eis-panel,.eis-plot{min-width:0;padding:12px 14px;border:1px solid #344b60;border-radius:8px;background:#0e1e2c}.eis-panel h3,.eis-plot h3{margin:0;font-size:21px}.eis-comp h3{color:#83b9f1}.eis-non h3{color:#e5a7ef}.eis-panel-desc{margin:3px 0 8px;font-size:14px;color:#a9bacb}.eis-molecules{width:100%;display:block;border:1px solid #2c455a;border-radius:5px;background:#07111c}.eis-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.eis-metrics div{border-right:1px solid #344b60}.eis-metrics div:last-child{border:0}.eis-metrics span{display:block;color:#a9bacb;font-size:13px}.eis-metrics strong{display:block;font-size:23px;font-variant-numeric:tabular-nums}.eis-metrics div:nth-child(2) strong{color:#ffd078}.eis-count{font-size:12px;color:#a9bacb;margin:8px 0 0}.eis-graph-legend{display:flex;gap:22px;justify-content:center;margin:14px 0 8px;font-size:14px}.eis-plot h3{font-size:18px}.eis-plot svg{width:100%;display:block;cursor:crosshair;touch-action:none;user-select:none}.eis-plot p{font-size:12px;color:#a9bacb;margin:0}.eis-explanation{padding:12px 14px;border-left:3px solid #ffd078;background:#142535;margin:14px 0 8px;color:#ffd078;font-size:16px}.eis-important{font-size:14px;color:#c8d7e5;margin:0 0 12px}.eis-model{border-top:1px solid #344b60;padding-top:10px;font-size:13px;color:#a9bacb}.eis-model summary{cursor:pointer;color:#83b9f1}.eis-model a{color:#83b9f1}.eis-formula{white-space:pre-line;padding:10px 14px;background:#07111c;color:#c8d7e5}.eis-model p{margin:10px 0}@media(max-width:760px){.eis-header{padding:12px 14px}.eis-header h2{font-size:20px}.eis-content{padding:12px}.eis-control-sliders,.eis-model-grid,.eis-plots{grid-template-columns:1fr}.eis-control-sliders{gap:12px}.eis-fixed{margin-left:0}.eis-label{font-size:15px}.eis-presets{gap:6px}.eis-dialog button{padding:8px 9px;font-size:13px}.eis-metrics strong{font-size:21px}}@media print{.eis-launch,.eis-dialog{display:none!important}}
+`;style.textContent+=`@media(min-width:1000px){.eis-header{padding:10px 18px}.eis-header h2{font-size:23px}.eis-content{padding:12px 18px 16px}.eis-controls{padding:10px 12px}.eis-presets{margin-top:5px}.eis-presets button{padding:6px 10px}.eis-control-hint{margin-top:5px;font-size:12px}.eis-legend{margin:8px 0 7px}.eis-panel{padding:9px 11px}.eis-panel h3{font-size:19px}.eis-panel-desc{margin:2px 0 5px;font-size:13px}.eis-metrics{margin-top:7px}.eis-metrics strong{font-size:21px}.eis-count{margin-top:5px}.eis-graph-legend{margin:9px 0 5px}.eis-plot{padding:9px 11px}.eis-plot svg{height:205px}.eis-plot p{font-size:11px}.eis-explanation{margin-top:10px;padding:8px 12px}.eis-important{font-size:13px}.eis-model{font-size:12px}}`;document.head.append(style);decorate();new MutationObserver(decorate).observe(document.getElementById('root'),{childList:true,subtree:true})}
+setTimeout(install,100);
+})();
+
+</script>
+</body>
 </html>
